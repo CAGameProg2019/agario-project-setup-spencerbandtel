@@ -19,10 +19,11 @@ class Vector {
         return this;
     }
 
-    scale(radius){
+    scale(s){
         // change size of vector
-        this.radius += radius;
-        return this;
+        this.s = s;
+        vel.x *= s;
+        vel.y *= s;
     }
 
     toString() {
