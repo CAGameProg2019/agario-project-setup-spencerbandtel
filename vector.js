@@ -22,8 +22,8 @@ class Vector {
     scale(s){
         // change size of vector
         this.s = s;
-        vel.x *= s;
-        vel.y *= s;
+        pos.x *= this.s;
+        pos.y *= this.s;
     }
 
     toString() {
