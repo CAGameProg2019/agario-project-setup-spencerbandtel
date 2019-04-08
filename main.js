@@ -21,13 +21,13 @@ function randomColor(){
 }
 
 function init() {
-    let x = Math.random() * canvas.width;
-    let y = Math.random() * canvas.height;
-    let color = randomColor();
     for(var i = 0; i <= 100; i++){
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let color = randomColor();
         foods.push(new Food(x,y,20,color));
     }
-        update();
+    update();
 }
 
 function update() {
