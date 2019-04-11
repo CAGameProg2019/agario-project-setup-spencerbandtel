@@ -12,5 +12,24 @@ class Food extends Vector{
         c.closePath();
         c.fill();
     }
+    intersects(food) {
+        let distance = this.dist(food);
+        if(distance <= this.radius + food.radius){
+            return true;
+        }
+        return false;
+    }
+
+    get mass() {
+        return Math.PI * this.radius * this.radius;
+    }
+
+    set mass(newmass) {
+        this.radius = Math.sqrt(newmass / Math.PI)
+    }
+
+    addMass(m){
+        this.mass += m;
+    }
 }
 Object.assign(Food, Vector);
