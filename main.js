@@ -11,16 +11,25 @@ let player;
 let foods = [];
 
 let colors = [
-    'brown',
-    'chocolate',
-    'saddlebrown',
-    'sienna',
-    'peru',
-    'tan',
-    'wheat'
+    '#7D6AF8',
+    '#F36C91',
+    '#E76262',
+    '#46DBE5',
+    '80F2DA',
+    '#B56FEC',
+    '#F398E0'
 ];
 
-name = prompt("What's Your Name?");
+let strokeColors = [
+    '#4937BB',
+    '#CF4B6F',
+    '#C74040',
+    '#1EA3AB',
+    '#32C0A2',
+    '#8F46C8',
+    '#F120C5'
+];
+
 
 function randomColor(){
     let index = Math.floor(Math.random() * colors.length);
@@ -37,8 +46,13 @@ function generateFood(){
 function init() {
 
     mpos = new Vector(canvas.width/2, canvas.height/2);
-
-    player = new Player(canvas.width/2,canvas.height/2, 25, randomColor());
+    name = prompt("What's Your Name?");
+    let color = randomColor();
+    let stroke = strokeColors[colors.indexOf(color)];
+    player = new Player(canvas.width/2,canvas.height/2, 25, color, stroke,name);
+    if(name == "Gregory" || name == "gregory"){
+        alert("You dare to challenge me again Gregory?");
+    }
 
     for(var i = 0; i <= FOOD_COUNT; i++){
         generateFood();
@@ -46,9 +60,23 @@ function init() {
     update();
 }
 
-function update() {
-    c.clearRect(0,0,canvas.width,canvas.height);
 
+function update() {
+    if(name == "Gregory" || name == "gregory"){
+        c.fillStyle = "red";
+        c.fillRect(0,0,canvas.width,canvas.height);
+        c.fillStyle = "black";
+        c.textAlign = 'center';
+        c.textBaseline='middle';
+        c.font = '100px Arial';
+        c.fillText("Never Again",canvas.width/2,canvas.height/2);
+        for(let i = 0; i < foods.length; i++){
+            foods[i].color = "darkRed";
+            foods[i].y +=3;
+        }
+    } else{
+        c.clearRect(0,0,canvas.width,canvas.height);
+    }
     player.x = mpos.x;
     player.y = mpos.y;
 
@@ -65,7 +93,7 @@ function update() {
     while(foods.length < FOOD_COUNT){
         generateFood();
     }
-    player.draw(c,name);
+    player.draw(c);
 
 
     requestAnimationFrame(update);
