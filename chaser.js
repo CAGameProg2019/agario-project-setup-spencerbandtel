@@ -1,14 +1,13 @@
-class Player extends Food {
+class Chaser extends Food {
 
-    constructor(x,y,radius,color,stroke,name,maxSpeed) {
+    constructor(x,y,radius,color,stroke,maxSpeed) {
         super(x,y,radius,color);
         this.stroke = stroke;
-        this.name = name;
         this.maxSpeed = maxSpeed;
     }
 
-    update(mouse){
-        let vel = new Vector(mouse.x,mouse.y);
+    update(player){
+        let vel = new Vector(player.x,player.y);
         vel.subVector(this);
         let dist = vel.magnitude();
         if(dist > 0){
@@ -33,9 +32,9 @@ class Player extends Food {
         let fontSize = Math.round(this.radius*.3);
         c.font = fontSize + 'px Arial';
         c.strokeStyle = 'black';
-        c.strokeText(this.name, this.x,this.y);
-        c.fillText(this.name,this.x,this.y);
+        c.strokeText("Chaser", this.x,this.y);
+        c.fillText("Chaser",this.x,this.y);
     }
 
 }
-Object.assign(Player, Food);
+Object.assign(Chaser, Food);

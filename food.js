@@ -1,9 +1,11 @@
 class Food extends Vector{
 
-    constructor(x,y,radius,color) {
+    constructor(x,y,radius,color,dx,dy) {
         super(x,y);
         this.radius = radius;
         this.color = color;
+        this.dx = dx;
+        this.dy = dy;
     }
     draw(c){
         c.fillStyle = this.color;
@@ -19,7 +21,17 @@ class Food extends Vector{
         }
         return false;
     }
+    move(){
+        if(this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+            this.dx = -this.dx;
+        }
 
+        if(this.y + this.radius + this.dy> canvas.height || this.y - this.radius < 0) {
+            this.dy = -this.dy;
+        }
+        this.x += this.dx;
+        this.y += this.dy;
+    }
     get mass() {
         return Math.PI * this.radius * this.radius;
     }

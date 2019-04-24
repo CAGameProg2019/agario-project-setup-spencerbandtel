@@ -8,6 +8,7 @@ const FOOD_COUNT = 100;
 let mpos;
 
 let player;
+let chaser;
 let foods = [];
 
 let colors = [
@@ -40,7 +41,9 @@ function generateFood(){
     let x = Math.random() * canvas.width;
     let y = Math.random() * canvas.height;
     let color = randomColor();
-    foods.push(new Food(x,y,10,color));
+    let dx = (Math.random() - 0.5) * 2;
+    let dy = (Math.random() - 0.5) * 2;
+    foods.push(new Food(x,y,10,color,dx,dy));
 }
 
 function init() {
@@ -49,11 +52,11 @@ function init() {
     name = prompt("What's Your Name?");
     let color = randomColor();
     let stroke = strokeColors[colors.indexOf(color)];
-    player = new Player(canvas.width/2,canvas.height/2, 25, color, stroke,name);
+    chaser = new Chaser(canvas.width/3,canvas.height/3, 40, color, stroke,3);
+    player = new Player(canvas.width/2,canvas.height/2, 25, color, stroke,name,4);
     if(name == "Gregory" || name == "gregory"){
-        alert("You dare to challenge me again Gregory?");
+        alert("Not Again Gregory");
     }
-
     for(var i = 0; i <= FOOD_COUNT; i++){
         generateFood();
     }
@@ -63,6 +66,7 @@ function init() {
 
 function update() {
     if(name == "Gregory" || name == "gregory"){
+        player.name = "The Enemy";
         c.fillStyle = "red";
         c.fillRect(0,0,canvas.width,canvas.height);
         c.fillStyle = "black";
@@ -72,18 +76,20 @@ function update() {
         c.fillText("Never Again",canvas.width/2,canvas.height/2);
         for(let i = 0; i < foods.length; i++){
             foods[i].color = "darkRed";
-            foods[i].y +=3;
+            foods[i].y += Math.random()*5;;
         }
     } else{
         c.clearRect(0,0,canvas.width,canvas.height);
     }
-    player.x = mpos.x;
-    player.y = mpos.y;
+
+    player.update(mpos);
+    chaser.update(player);
 
     for(let i = 0; i < foods.length; i++){
         let eaten = player.intersects(foods[i]);
         if(!eaten){
             foods[i].draw(c);
+            //foods[i].move();
         }else{
             player.addMass(foods[i].mass);
             foods.splice(i,1);
@@ -94,6 +100,7 @@ function update() {
         generateFood();
     }
     player.draw(c);
+    chaser.draw(c);
 
 
     requestAnimationFrame(update);

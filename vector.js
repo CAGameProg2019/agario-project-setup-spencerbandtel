@@ -21,15 +21,23 @@ class Vector {
 
     scale(s){
         // change size of vector
-        this.s = s;
-        pos.x *= this.s;
-        pos.y *= this.s;
+        this.x *= s;
+        this.y *= s;
+        return this;
     }
 
     dist(vec){
         let x = vec.x-this.x;
         let y = vec.y-this.y
         return Math.sqrt((x*x)+(y*y));
+    }
+
+    magnitude(){
+        return Math.sqrt((this.x*this.x)+(this.y*this.y));
+    }
+
+    toDirVec(){
+        this.scale(1/this.magnitude());
     }
 
     toString() {
