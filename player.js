@@ -33,8 +33,8 @@ class Player extends Food {
         let fontSize = Math.round(this.radius*.3);
         c.font = fontSize + 'px Arial';
         c.strokeStyle = 'black';
-        c.strokeText(this.name, this.x,this.y);
-        c.fillText(this.name,this.x,this.y);
+        c.strokeText(this.name + " " + Math.floor(this.radius), this.x,this.y);
+        c.fillText(this.name + " " + Math.floor(this.radius),this.x,this.y);
     }
 
 }

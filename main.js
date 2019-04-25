@@ -50,13 +50,11 @@ function init() {
 
     mpos = new Vector(canvas.width/2, canvas.height/2);
     name = prompt("What's Your Name?");
+    alert("Goal: Grow to 200 before getting caught");
     let color = randomColor();
     let stroke = strokeColors[colors.indexOf(color)];
-    chaser = new Chaser(canvas.width/3,canvas.height/3, 40, color, stroke,3);
     player = new Player(canvas.width/2,canvas.height/2, 25, color, stroke,name,4);
-    if(name == "Gregory" || name == "gregory"){
-        alert("Not Again Gregory");
-    }
+    chaser = new Chaser(canvas.width/5,canvas.height/5, 40, color + '', stroke + '',.5);
     for(var i = 0; i <= FOOD_COUNT; i++){
         generateFood();
     }
@@ -65,45 +63,39 @@ function init() {
 
 
 function update() {
-    if(name == "Gregory" || name == "gregory"){
-        player.name = "The Enemy";
-        c.fillStyle = "red";
-        c.fillRect(0,0,canvas.width,canvas.height);
-        c.fillStyle = "black";
-        c.textAlign = 'center';
-        c.textBaseline='middle';
-        c.font = '100px Arial';
-        c.fillText("Never Again",canvas.width/2,canvas.height/2);
-        for(let i = 0; i < foods.length; i++){
-            foods[i].color = "darkRed";
-            foods[i].y += Math.random()*5;;
-        }
+    if(player.radius >= 201){
+        alert("You win!");
     } else{
-        c.clearRect(0,0,canvas.width,canvas.height);
-    }
+        let caught = player.intersects(chaser);
+        if(caught){
+            alert("You Lose");
+        } else{
 
-    player.update(mpos);
-    chaser.update(player);
+            c.clearRect(0,0,canvas.width,canvas.height);
+            player.draw(c);
+            chaser.draw(c);
 
-    for(let i = 0; i < foods.length; i++){
-        let eaten = player.intersects(foods[i]);
-        if(!eaten){
-            foods[i].draw(c);
-            //foods[i].move();
-        }else{
-            player.addMass(foods[i].mass);
-            foods.splice(i,1);
-            i--;
+            player.update(mpos);
+            chaser.update(player);
+
+            for(let i = 0; i < foods.length; i++){
+                let eaten = player.intersects(foods[i]);
+                if(!eaten){
+                    foods[i].draw(c);
+                    foods[i].move();
+                }else{
+                    player.addMass(foods[i].mass);
+                    foods.splice(i,1);
+                    i--;
+                }
+            }
+            while(foods.length < FOOD_COUNT){
+                generateFood();
+            }
+
+            requestAnimationFrame(update);
         }
     }
-    while(foods.length < FOOD_COUNT){
-        generateFood();
-    }
-    player.draw(c);
-    chaser.draw(c);
-
-
-    requestAnimationFrame(update);
 }
 
 window.addEventListener('load', function() {
